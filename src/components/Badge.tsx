@@ -11,31 +11,14 @@ type Props = {
 const defaultTextColor = '#303235';
 
 export const Badge = (props: Props) => {
-  let liteBadge: HTMLAnchorElement | undefined;
-  let observer: MutationObserver | undefined;
-
-  const appendBadgeIfNecessary = (mutations: MutationRecord[]) => {
-    mutations.forEach((mutation) => {
-      mutation.removedNodes.forEach((removedNode) => {
-        if ('id' in removedNode && liteBadge && removedNode.id == 'lite-badge') {
-          console.log("Sorry, you can't remove the brand 😅");
-          props.botContainer?.append(liteBadge);
-        }
-      });
-    });
-  };
+  // Removed MutationObserver logic
 
   onMount(() => {
-    if (!document || !props.botContainer) return;
-    observer = new MutationObserver(appendBadgeIfNecessary);
-    observer.observe(props.botContainer, {
-      subtree: false,
-      childList: true,
-    });
+    // Removed MutationObserver setup
   });
 
   onCleanup(() => {
-    if (observer) observer.disconnect();
+    // Removed MutationObserver cleanup
   });
 
   return (
@@ -49,17 +32,6 @@ export const Badge = (props: Props) => {
           }}
         >
           {props.footer?.text ?? 'Powered by'}
-          <a
-            ref={liteBadge}
-            href={props.footer?.companyLink ?? 'https://rai.com.ly'}
-            target="_blank"
-            rel="noopener noreferrer"
-            class="lite-badge"
-            id="lite-badge"
-            style={{ 'font-weight': 'bold', color: props.footer?.textColor ?? props.poweredByTextColor ?? defaultTextColor }}
-          >
-            <span>&nbsp;{props.footer?.company ?? 'rai'}</span>
-          </a>
         </span>
       </Show>
       <Show when={props.footer?.showFooter === false}>
